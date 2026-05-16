@@ -1,0 +1,44 @@
+{% extends "_base.html" %}
+{% block title %}{{ resource.label_plural }} — {{ admin.title }}{% endblock %}
+{% block content %}
+<div class="breadcrumb"><a href="{{ admin.url_prefix }}">{{ admin.title }}</a> / {{ resource.label_plural }}</div>
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px">
+  <h2 style="margin:0">{{ resource.label_plural }} <span class="muted">({{ total }})</span></h2>
+  {% if resource.can_create %}<a class="button" href="{{ admin.url_prefix }}/{{ resource.name }}/new">+ New {{ resource.label }}</a>{% endif %}
+</div>
+
+{% if resource.list_search %}
+<form class="search" method="get">
+  <input type="text" name="q" value="{{ q }}" placeholder="Search {{ resource.list_search | join(', ') }}">
+  <button type="submit" class="secondary">Search</button>
+</form>
+{% endif %}
+
+{% if rows %}
+<table>
+  <thead><tr>
+    {% for fs in resource.display_fields() %}<th>{{ fs.name }}</th>{% endfor %}
+    <th></th>
+  </tr></thead>
+  <tbody>
+    {% for row in rows %}
+    <tr>
+      {% for fs in resource.display_fields() %}<td>{{ resource.render_value(row, fs.name) }}</td>{% endfor %}
+      <td><a href="{{ admin.url_prefix }}/{{ resource.name }}/{{ row | attr(resource.primary_key) }}">view</a></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% if pages > 1 %}
+<div class="pagination">
+  {% if page > 1 %}<a class="button secondary" href="?page={{ page - 1 }}{% if q %}&q={{ q }}{% endif %}">‹ Prev</a>{% endif %}
+  <span class="muted" style="align-self:center">Page {{ page }} of {{ pages }}</span>
+  {% if page < pages %}<a class="button secondary" href="?page={{ page + 1 }}{% if q %}&q={{ q }}{% endif %}">Next ›</a>{% endif %}
+</div>
+{% endif %}
+
+{% else %}
+<div class="empty">No {{ resource.label_plural | lower }} yet.</div>
+{% endif %}
+{% endblock %}

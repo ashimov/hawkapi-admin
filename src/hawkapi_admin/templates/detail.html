@@ -1,0 +1,29 @@
+{% extends "_base.html" %}
+{% block title %}{{ resource.label }} #{{ obj | attr(resource.primary_key) }}{% endblock %}
+{% block content %}
+<div class="breadcrumb"><a href="{{ admin.url_prefix }}">{{ admin.title }}</a> /
+  <a href="{{ admin.url_prefix }}/{{ resource.name }}">{{ resource.label_plural }}</a> /
+  {{ obj | attr(resource.primary_key) }}
+</div>
+
+<h2>{{ resource.label }} #{{ obj | attr(resource.primary_key) }}</h2>
+
+<div>
+  {% for fs in resource.fields %}
+  <div class="field-row">
+    <div class="muted">{{ fs.name }}</div>
+    <div>{{ resource.render_value(obj, fs.name) }}</div>
+  </div>
+  {% endfor %}
+</div>
+
+<div class="actions">
+  {% if resource.can_update %}<a class="button" href="{{ admin.url_prefix }}/{{ resource.name }}/{{ obj | attr(resource.primary_key) }}/edit">Edit</a>{% endif %}
+  {% if resource.can_delete %}
+  <form method="post" action="{{ admin.url_prefix }}/{{ resource.name }}/{{ obj | attr(resource.primary_key) }}/delete" style="display:inline">
+    <button class="danger" type="submit" onclick="return confirm('Delete this {{ resource.label | lower }}?')">Delete</button>
+  </form>
+  {% endif %}
+  <a class="button secondary" href="{{ admin.url_prefix }}/{{ resource.name }}">Back</a>
+</div>
+{% endblock %}

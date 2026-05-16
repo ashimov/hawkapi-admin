@@ -1,0 +1,43 @@
+{% extends "_base.html" %}
+{% block title %}{% if obj %}Edit{% else %}New{% endif %} {{ resource.label }}{% endblock %}
+{% block content %}
+<div class="breadcrumb"><a href="{{ admin.url_prefix }}">{{ admin.title }}</a> /
+  <a href="{{ admin.url_prefix }}/{{ resource.name }}">{{ resource.label_plural }}</a> /
+  {% if obj %}Edit{% else %}New{% endif %}
+</div>
+
+<h2>{% if obj %}Edit {{ resource.label }} #{{ obj | attr(resource.primary_key) }}{% else %}New {{ resource.label }}{% endif %}</h2>
+
+<form method="post"
+      action="{{ admin.url_prefix }}/{{ resource.name }}{% if obj %}/{{ obj | attr(resource.primary_key) }}/edit{% else %}/new{% endif %}">
+  {% for fs in resource.editable_fields() %}
+  {% set widget = widget_for(fs) %}
+  {% set value = values.get(fs.name, '') %}
+  <div>
+    <label for="f-{{ fs.name }}">{{ fs.name }}{% if not fs.nullable and not fs.has_default %} <span style="color:var(--danger)">*</span>{% endif %}</label>
+    {% if widget == 'textarea' %}
+      <textarea id="f-{{ fs.name }}" name="{{ fs.name }}">{{ value }}</textarea>
+    {% elif widget == 'checkbox' %}
+      <input id="f-{{ fs.name }}" type="checkbox" name="{{ fs.name }}" value="1" {% if value %}checked{% endif %}>
+    {% elif widget == 'enum' %}
+      <select id="f-{{ fs.name }}" name="{{ fs.name }}">
+        {% for v in fs.enum_values %}<option value="{{ v }}" {% if value == v %}selected{% endif %}>{{ v }}</option>{% endfor %}
+      </select>
+    {% elif widget == 'date' %}
+      <input id="f-{{ fs.name }}" type="date" name="{{ fs.name }}" value="{{ value }}">
+    {% elif widget == 'datetime' %}
+      <input id="f-{{ fs.name }}" type="datetime-local" name="{{ fs.name }}" value="{{ value }}">
+    {% elif widget == 'number' %}
+      <input id="f-{{ fs.name }}" type="number" step="any" name="{{ fs.name }}" value="{{ value }}">
+    {% else %}
+      <input id="f-{{ fs.name }}" type="text" name="{{ fs.name }}" value="{{ value }}" {% if fs.max_length %}maxlength="{{ fs.max_length }}"{% endif %}>
+    {% endif %}
+    {% if errors.get(fs.name) %}<div style="color:var(--danger)">{{ errors[fs.name] }}</div>{% endif %}
+  </div>
+  {% endfor %}
+  <div class="actions">
+    <button type="submit">Save</button>
+    <a class="button secondary" href="{{ admin.url_prefix }}/{{ resource.name }}">Cancel</a>
+  </div>
+</form>
+{% endblock %}

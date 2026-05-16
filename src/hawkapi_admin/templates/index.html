@@ -1,0 +1,12 @@
+{% extends "_base.html" %}
+{% block content %}
+<h2>{{ admin.title }}</h2>
+<p class="muted">{{ resources | length }} resource{% if resources | length != 1 %}s{% endif %} registered.</p>
+<ul>
+  {% for res in resources %}
+  <li>
+    <a href="{{ admin.url_prefix }}/{{ res.name }}">{% if res.icon %}{{ res.icon }} {% endif %}{{ res.label_plural }}</a>
+  </li>
+  {% endfor %}
+</ul>
+{% endblock %}
