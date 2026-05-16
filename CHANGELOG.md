@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.1 — 2026-05-16
+
+Fix wheel build: drop the empty `static/` force-include entry that broke `uv build` in CI.
+
 ## 0.1.0 — 2026-05-16
 
 Initial release.

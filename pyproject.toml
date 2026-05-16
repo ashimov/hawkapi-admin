@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "hawkapi-admin"
-version = "0.1.0"
+version = "0.1.1"
 description = "Auto-generated admin UI for HawkAPI + SQLAlchemy — list, detail, create, edit, delete with no boilerplate"
 readme = "README.md"
 license = { file = "LICENSE" }
@@ -46,10 +46,7 @@ Issues = "https://github.com/ashimov/hawkapi-admin/issues"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/hawkapi_admin"]
-
-[tool.hatch.build.targets.wheel.force-include]
-"src/hawkapi_admin/templates" = "hawkapi_admin/templates"
-"src/hawkapi_admin/static" = "hawkapi_admin/static"
+artifacts = ["src/hawkapi_admin/templates/*.html"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
