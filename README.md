@@ -1,6 +1,6 @@
 # hawkapi-admin
 
-Auto-generated admin UI for [HawkAPI](https://github.com/ashimov/HawkAPI) + [hawkapi-sqlalchemy](https://pypi.org/project/hawkapi-sqlalchemy/) models. Drop your model classes in and get list / detail / create / edit / delete views mounted under `/admin` — no boilerplate, no React, no JSON-schema duplication.
+Auto-generated admin UI for [HawkAPI](https://github.com/Hawk-API/HawkAPI) + [hawkapi-sqlalchemy](https://pypi.org/project/hawkapi-sqlalchemy/) models. Drop your model classes in and get list / detail / create / edit / delete views mounted under `/admin` — no boilerplate, no React, no JSON-schema duplication.
 
 ## Install
 
@@ -105,7 +105,7 @@ The bundled CSS is roughly 60 lines, prefers system colors (light + dark mode), 
 ## Development
 
 ```bash
-git clone https://github.com/ashimov/hawkapi-admin.git
+git clone https://github.com/Hawk-API/hawkapi-admin.git
 cd hawkapi-admin
 uv sync --extra dev
 uv run pytest -q
